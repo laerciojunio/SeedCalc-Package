@@ -1,6 +1,24 @@
-.Rproj.user
+# R / RStudio session files
+.Rproj.user/
 .Rhistory
 .RData
 .Ruserdata
-*:Zone.Identifier
+.Rapp.history
+
+# Local secrets and credentials
+.Renviron
+.httr-oauth
+
+# Package build and check output
+*.tar.gz
+*.Rcheck/
+Meta/
+inst/doc
+
+# pkgdown site
 docs/
+
+# OS / Windows artefacts
+*:Zone.Identifier
+.DS_Store
+Thumbs.db
