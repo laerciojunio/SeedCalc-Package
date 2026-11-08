@@ -1,6 +1,6 @@
 Package: SeedCalc
 Title: Seed Germination and Seedling Growth Indexes
-Version: 1.0.0.9000
+Version: 2.0.0
 Authors@R: c(
     person("Laercio Junio", "da Silva", , "laerciojdsilva@gmail.com", role = c("aut", "cre")),
     person("Andre Dantas", "de Medeiros", , "medeiros.seeds@gmail.com", role = "aut"),

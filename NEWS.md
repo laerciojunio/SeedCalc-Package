@@ -1,4 +1,4 @@
-# SeedCalc (development version)
+# SeedCalc 2.0.0
 
 ## Breaking changes
 
