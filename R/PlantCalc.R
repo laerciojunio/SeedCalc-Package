@@ -1,65 +1,58 @@
-PlantCalc <- function(lengths, Ger=100, wr = 90, wh = 10, wg = 0.7, wu = 0.3, Unif = 1) {
+#' Calculate all seedling indexes
+#'
+#' Calculates all seedling indexes provided by the package for each
+#' combination of the two identification columns (e.g. treatment and
+#' replicate) of `lengths`.
+#'
+#' @inheritParams growth
+#' @inheritParams vigor
+#'
+#' @return A `data.frame` with the two identification columns followed by
+#'   `mean_pa`, `mean_raiz`, `mean_total`, `mean_razao`, `Unif_1`,
+#'   `Unif_2`, `Growth` and `Vigor`.
+#' @family seedling indexes
+#' @export
+#'
+#' @examples
+#' Seedling <- data.frame(
+#'   LOTE = c(1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2),
+#'   REP = c(1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2),
+#'   SH = c(0.00, 2.77, 1.18, 1.07, 0.80, 2.65, 3.51, 0.64, 2.77, 1.18, 1.07,
+#'          0.80, 2.65, 3.51, 1.98),
+#'   ROOT = c(4.86, 6.71, 7.88, 3.68, 9.68, 8.88, 9.85, 4.86, 6.71, 7.88, 3.68,
+#'            9.68, 8.88, 9.85, 8.75)
+#' )
+#' PlantCalc(Seedling)
+#'
+#' # 80% root / 20% shoot; 60% growth / 40% uniformity
+#' PlantCalc(Seedling, wr = 0.8, wg = 0.6)
+PlantCalc <- function(lengths, wr = 0.9, wg = 0.7, Unif = 1) {
+  check_weight(wr)
+  check_weight(wg)
+  rows <- list()
 
-  #data.frame dos resultados das funcoes
-  result_trat_rep <- data.frame()
-  result_mean_pa <- data.frame()
-  result_mean_raiz <- data.frame()
-  result_mean_total <- data.frame()
-  result_mean_razao <- data.frame()
-  result_unif_1 <- data.frame()
-  result_unif_2 <- data.frame()
-  result_growth <- data.frame()
-  result_vigor <- data.frame()
-  result_vigor_corr <- data.frame()
+  for (trat in levels(as.factor(lengths[[1]]))) {
+    lengths_trat <- lengths[lengths[[1]] == trat, , drop = FALSE]
 
-  #cria varios bancos de dados, para os niveis de trat e as rep, e rodas as funcoes para cada um
-  niveis_1 <- levels(as.factor(lengths[[1]]))
+    for (rep in levels(as.factor(lengths_trat[[2]]))) {
+      x <- lengths_trat[lengths_trat[[2]] == rep, , drop = FALSE]
 
-  for (i in 1:length(niveis_1)) {
-
-    lengths_calc <- subset(lengths, lengths[1]==niveis_1[i])
-
-    niveis_2 <- levels(as.factor(lengths_calc[[2]]))
-
-    for (j in 1:length(niveis_2)){
-
-      lengths_calc_2 <- subset(lengths_calc, lengths_calc[2]==niveis_2[j])
-
-      result_mean_pa <- rbind(result_mean_pa, mean_pa(lengths_calc_2))
-
-      result_mean_raiz <- rbind(result_mean_raiz, mean_raiz(lengths_calc_2))
-
-      result_mean_total <- rbind(result_mean_total, mean_total(lengths_calc_2))
-
-      result_mean_razao <- rbind(result_mean_razao, mean_razao(lengths_calc_2))
-
-      result_unif_1 <- rbind(result_unif_1, unif_1(lengths_calc_2))
-
-      result_unif_2 <- rbind(result_unif_2, unif_2(lengths_calc_2))
-
-      result_growth <- rbind(result_growth, growth(lengths_calc_2, wr, wh))
-
-      result_vigor <- rbind(result_vigor, vigor(lengths_calc_2, wg, wu, Unif))
-
-      if (is.data.frame(Ger)) {
-        Ger_inf <- subset(Ger[2], Ger[1]==niveis_1[i])
-        result_vigor_corr <- rbind(result_vigor_corr, vigor_corr(lengths_calc_2, Ger_inf, wg, wu, Unif))
-      }
-      else
-      {
-        result_vigor_corr <- rbind(result_vigor_corr, vigor_corr(lengths_calc_2, Ger, wg, wu, Unif))
-      }
-
-      result_trat_rep <- rbind(result_trat_rep, cbind(niveis_1[i], niveis_2[j]))
+      rows[[length(rows) + 1]] <- data.frame(
+        trat = trat,
+        rep = rep,
+        mean_pa = mean_pa(x),
+        mean_raiz = mean_raiz(x),
+        mean_total = mean_total(x),
+        mean_razao = mean_razao(x),
+        Unif_1 = unif_1(x),
+        Unif_2 = unif_2(x),
+        Growth = growth(x, wr = wr),
+        Vigor = vigor(x, wg = wg, Unif = Unif, wr = wr)
+      )
     }
-
   }
 
-  result <- data.frame(result_trat_rep, result_mean_pa, result_mean_raiz, result_mean_total, result_mean_razao, result_unif_1, result_unif_2, result_growth, result_vigor, result_vigor_corr)
-
-
-  colnames(result) <- c(names(lengths[1]), names(lengths[2]), 'mean_pa', 'mean_raiz', 'mean_total', 'mean_razao', 'Unif_1', 'Unif_2', 'Growth', 'Vigor', 'Vigor_corr')
-
-  return(result)
+  result <- do.call(rbind, rows)
+  names(result)[1:2] <- names(lengths)[1:2]
+  result
 }
-

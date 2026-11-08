@@ -1,14 +1,22 @@
-
+#' Mean Germination Time
+#'
+#' Calculates the Mean Germination Time (Labouriau, 1983):
+#' \deqn{MGT = \sum n_i t_i / \sum n_i}
+#'
+#' @inheritParams GSI
+#' @return A numeric value, in the same unit as `time`.
+#' @references
+#' Labouriau, L. G. (1983). Uma nova linha de pesquisa na fisiologia da
+#' germinação das sementes. *Anais do XXXIV Congresso Nacional de Botânica*.
+#' SBB, Porto Alegre, 11–50.
+#' @seealso [MGR()]
+#' @export
+#'
+#' @examples
+#' time <- 1:10
+#' nger <- c(0, 2, 4, 15, 25, 38, 45, 50, 50, 50)
+#' MGT(time, nger)
 MGT <- function(time, nger) {
-
-  sum_tn <- time[1]*nger[1]
-  sum_n <- 0
-
-     for (i in 2:length(time)) {
-     sum_tn <- sum_tn + time[i]*(nger[i] - nger[i-1])
-     sum_n <- nger[i]
-   }
-
- result <- sum_tn/sum_n
- return(result)
+  n <- non_cumulative(nger)
+  sum(time * n) / nger[length(nger)]
 }

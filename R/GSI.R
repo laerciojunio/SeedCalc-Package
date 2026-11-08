@@ -1,20 +1,25 @@
-# germination speed index
-# equation: GI = G1 / T1 + G2 / T2 +.+ Gn / Tn
-# Onde, G1, G2, ..., Gn: numero de sementes germinadas na primeira contagem, segunda contagem e assim por diante at? a ?ltima contagem (n), respectivamente, e T1, T2, ..., Tn: n?mero de dias entre a semeadura e a primeira contagem, entre a semeadura e a segunda contagem, e assim por diante at? a ?ltima contagem (n), respectivamente.
-
+#' Germination Speed Index
+#'
+#' Calculates the Germination Speed Index (Maguire, 1962):
+#' \deqn{GSI = G_1/T_1 + G_2/T_2 + \dots + G_n/T_n}
+#' where \eqn{G_i} is the number of seeds germinated at the \eqn{i}-th count
+#' and \eqn{T_i} is the time from sowing to the \eqn{i}-th count.
+#'
+#' @param time A numeric vector with the evaluation times.
+#' @param nger A numeric vector with the cumulative number of seeds
+#'   germinated at each evaluation time.
+#'
+#' @return A numeric value.
+#' @references
+#' Maguire, J. D. (1962). Speed of germination - aid in selection and
+#' evaluation for seedling emergence and vigor. *Crop Science*, 2, 176–177.
+#' \doi{10.2135/cropsci1962.0011183X000200020033x}
+#' @export
+#'
+#' @examples
+#' time <- 1:10
+#' nger <- c(0, 2, 4, 15, 25, 38, 45, 50, 50, 50)
+#' GSI(time, nger)
 GSI <- function(time, nger) {
-
- n <- length(time)
- result <- 0
- nger_corr <- nger
-
- for (i in 2:n) {
-   nger_corr[i] <- nger[i] - nger[i-1]
- }
-
- for (i in 1:n) {
-   result <- result + nger_corr[[i]]/time[[i]]
- }
-
- return(result)
+  sum(non_cumulative(nger) / time)
 }

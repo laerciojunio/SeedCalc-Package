@@ -1,0 +1,10 @@
+services:
+  rstudio:
+    build: .
+    image: seedcalc
+    ports:
+      - "127.0.0.1:8787:8787"   # acessível só por este computador
+    environment:
+      - DISABLE_AUTH=true       # sem tela de login (uso pessoal)
+    volumes:
+      - ./:/home/rstudio/projeto

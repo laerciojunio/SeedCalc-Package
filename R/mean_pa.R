@@ -1,6 +1,25 @@
-
-mean_pa <- function(lengths){
-
- result <- mean(lengths[[3]])
-  return(result)
+#' Mean shoot length
+#'
+#' Calculates the mean shoot length of the seedlings.
+#'
+#' @param lengths A `data.frame` with seedling length data in four columns:
+#'   the first two identify the sample (e.g. treatment and replicate), the
+#'   third is the shoot length and the fourth is the root length.
+#'
+#' @return A numeric value.
+#' @family seedling indexes
+#' @export
+#'
+#' @examples
+#' Seedling <- data.frame(
+#'   LOTE = c(1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2),
+#'   REP = c(1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2),
+#'   SH = c(0.00, 2.77, 1.18, 1.07, 0.80, 2.65, 3.51, 0.64, 2.77, 1.18, 1.07,
+#'          0.80, 2.65, 3.51, 1.98),
+#'   ROOT = c(4.86, 6.71, 7.88, 3.68, 9.68, 8.88, 9.85, 4.86, 6.71, 7.88, 3.68,
+#'            9.68, 8.88, 9.85, 8.75)
+#' )
+#' mean_pa(Seedling)
+mean_pa <- function(lengths) {
+  mean(lengths[[3]])
 }

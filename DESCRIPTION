@@ -1,10 +1,36 @@
 Package: SeedCalc
-Type: Package
 Title: Seed Germination and Seedling Growth Indexes
-Version: 1.0.0
-Author: Laercio Junio da Silva, Andre Danta de Medeiros e Ariadne Morbeck Santos Oliveira
-Maintainer: Laercio Junio da Silva <laerciojdsilva@gmail.com>
-Description: Functions to calculate seed germination and seedling emergence and growth indexes. The main indexes for germination and seedling emergence, considering the time for seed germinate are: T10, T50 and T90, in Farooq et al. (2005) <10.1111/j.1744-7909.2005.00031.x>; and MGT, in Labouriau (1983). Considering the germination speed are: Germination Speed Index, in Maguire (1962), Mean Germination Rate, in Labouriau (1983); considering the homogeneity of germination are: Coefficient of Variation of the Germination Time, in Carvalho et al. (2005) <10.1590/S0100-84042005000300018>, and Variance of Germination, in Labouriau (1983); Uncertainty, in Labouriau and Valadares (1976) <ISSN:0001-3765>; and Synchrony, in Primack (1980). The main seedling indexes are Growth, in Sako (2001), Uniformity, in Sako (2001) and Castan et al. (2018) <doi:10.1590/1678-992x-2016-0401>; and Vigour, in Medeiros and Pereira (2018) <doi:10.1590/1983-40632018v4852340>.
+Version: 1.0.0.9000
+Authors@R: c(
+    person("Laercio Junio", "da Silva", , "laerciojdsilva@gmail.com", role = c("aut", "cre")),
+    person("Andre Dantas", "de Medeiros", , "medeiros.seeds@gmail.com", role = "aut"),
+    person("Ariadne Morbeck Santos", "Oliveira", , "ariadneoliveira86@gmail.com", role = "aut")
+  )
+Description: Functions to calculate seed germination and seedling emergence
+    and growth indexes. The main indexes for germination and seedling
+    emergence, considering the time for seed germinate are: T10, T50 and
+    T90, in Farooq et al. (2005) <doi:10.1111/j.1744-7909.2005.00031.x>;
+    and MGT, in Labouriau (1983). Considering the germination speed are:
+    Germination Speed Index, in Maguire (1962)
+    <doi:10.2135/cropsci1962.0011183X000200020033x>, Mean Germination Rate,
+    in Labouriau (1983); considering the homogeneity of germination are:
+    Coefficient of Variation of the Germination Time, in Carvalho et al.
+    (2005) <doi:10.1590/S0100-84042005000300018>, and Variance of
+    Germination, in Labouriau (1983); Uncertainty, in Labouriau and
+    Valadares (1976); and Synchrony, in Primack (1980) <doi:10.2307/2259460>.
+    The main seedling indexes are Growth, in Sako (2001), Uniformity, in
+    Sako (2001) and Castan et al. (2018)
+    <doi:10.1590/1678-992x-2016-0401>; and Vigour, in Sako (2001).
 License: GPL (>= 2)
+URL: https://github.com/laerciojunio/SeedCalc-Package
+BugReports: https://github.com/laerciojunio/SeedCalc-Package/issues
+Depends:
+    R (>= 3.5)
+Imports:
+    stats
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Encoding: UTF-8
-LazyData: true
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.1

@@ -1,25 +1,23 @@
-# Uncertainty
-
+#' Germination Uncertainty
+#'
+#' Calculates the germination uncertainty index, \eqn{U}, in bits
+#' (Labouriau & Valadares, 1976).
+#'
+#' @inheritParams GSI
+#' @return A numeric value.
+#' @references
+#' Labouriau, L. G., Valadares, M. B. (1976). On the germination of seeds of
+#' *Calotropis procera*. *Anais da Academia Brasileira de Ciências*, 48,
+#' 174–186.
+#' @export
+#'
+#' @examples
+#' time <- 1:10
+#' nger <- c(0, 2, 4, 15, 25, 38, 45, 50, 50, 50)
+#' Unc(time, nger)
 Unc <- function(time, nger) {
-  
-  n <- nger[1]
-  for (i in 2:length(nger)) {
-    n <- c(n, nger[i]-nger[i-1])
-  }
-  
-  E <- c()
-  f <- c()
-  
-  for (i in 1:length(n)) {
-    f <- c(f,n[i]/sum(n))  
-    
-    if (f[i] > 0) {
-      E <- c(E, f[i]*log2(f[i]))  
-    }
-    
-  }
-  
-  result <- -sum(E)
-  
-  return(result)
+  n <- non_cumulative(nger)
+  f <- n / sum(n)
+  f <- f[f > 0]
+  -sum(f * log2(f))
 }

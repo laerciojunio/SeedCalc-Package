@@ -1,77 +1,39 @@
-#funcao para calcular todos as variaveis
+#' Calculate all germination indexes
+#'
+#' Calculates all seed germination (or seedling emergence) indexes provided
+#' by the package for each replicate: [FGP()], [GSI()], [T10()], [T50()],
+#' [T90()], [UnifG()], [MGT()], [MGR()], [VarGer()], [CVt()], [Sinc()],
+#' [Unc()] and [CVG()].
+#'
+#' @param germdata A `data.frame`. The first column holds the evaluation
+#'   times and each of the remaining columns holds the cumulative number of
+#'   germinated seeds of one replicate.
+#' @param NSeeds The total number of seeds per replicate used in the
+#'   germination or emergence test.
+#'
+#' @return A `data.frame` with one row per replicate (named after the columns
+#'   of `germdata`) and one column per index.
+#' @export
+#'
+#' @examples
+#' germdata <- data.frame(
+#'   time = 1:10,
+#'   rep1 = c(0, 2, 4, 15, 25, 38, 45, 50, 50, 50),
+#'   rep2 = c(0, 4, 6, 18, 22, 39, 40, 48, 50, 50)
+#' )
+#' GermCalc(germdata, 50)
+GermCalc <- function(germdata, NSeeds) {
+  time <- germdata[[1]]
+  indexes <- list(
+    GSI = GSI, T10 = T10, T50 = T50, T90 = T90, UnifG = UnifG, MGT = MGT,
+    MGR = MGR, VarGer = VarGer, CVt = CVt, Sinc = Sinc, Unc = Unc, CVG = CVG
+  )
 
-GermCalc <- function(germdata, NSeeds){
+  rows <- lapply(germdata[-1], function(nger) {
+    c(FGP = FGP(nger, NSeeds), vapply(indexes, function(f) f(time, nger), numeric(1)))
+  })
 
-  result_FGP <- data.frame()
-  result_GSI <- data.frame()
-  result_T10 <- data.frame()
-  result_T50 <- data.frame()
-  result_T90 <- data.frame()
-  result_UnifG <- data.frame()
-  result_MGT <- data.frame()
-  result_MGR <- data.frame()
-  result_VarGer <- data.frame()
-  result_CVt <- data.frame()
-  result_Sinc <- data.frame()
-  result_Unc <- data.frame()
-  result_CVG <- data.frame()
-
-  for (i in 2:ncol(germdata)) {
-    result_FGP <- rbind(result_FGP, FGP(germdata[[i]], NSeeds))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_GSI <- rbind(result_GSI, GSI(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_T10 <- rbind(result_T10, T10(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_T50 <- rbind(result_T50, T50(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_T90 <- rbind(result_T90, T90(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_UnifG <- rbind(result_UnifG, UnifG(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_MGT <- rbind(result_MGT, MGT(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_MGR <- rbind(result_MGR, MGR(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_VarGer <- rbind(result_VarGer, VarGer(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_CVt <- rbind(result_CVt, CVt(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_Sinc <- rbind(result_Sinc, Sinc(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_Unc <- rbind(result_Unc, Unc(germdata[[1]],germdata[[i]]))
-  }
-
-  for (i in 2:ncol(germdata)) {
-    result_CVG <- rbind(result_CVG, CVG(germdata[[1]],germdata[[i]]))
-  }
-
-  result <- data.frame(result_FGP, result_GSI, result_T10, result_T50, result_T90, result_UnifG, result_MGT, result_MGR, result_VarGer, result_CVt, result_Sinc, result_Unc, result_CVG)
-
-  rownames(result) <- colnames(germdata[-1])
-  colnames(result) <- c('FGP', 'GSI', 'T10', 'T50', 'T90', 'UnifG', 'MGT', 'MGR', 'VarGer', 'CVt', 'Sinc', 'Unc', 'CVG')
-
-  return(result)
+  result <- as.data.frame(do.call(rbind, rows))
+  rownames(result) <- colnames(germdata)[-1]
+  result
 }

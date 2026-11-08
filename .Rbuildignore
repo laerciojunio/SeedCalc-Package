@@ -1,0 +1,11 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^Dockerfile$
+^compose\.yaml$
+^.*:Zone\.Identifier$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^LICENSE\.md$
